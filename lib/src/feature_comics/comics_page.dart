@@ -94,7 +94,6 @@ class _ComicsPageState extends State<ComicsPage> {
 
   }
 
-
   Widget _buildComic(Result result,bool isRow){
 
 
@@ -128,8 +127,6 @@ class _ComicsPageState extends State<ComicsPage> {
     ];
   }
 
-
-  
   Widget _textDescription(Result result){
     return ListTile(
       title: Text(
