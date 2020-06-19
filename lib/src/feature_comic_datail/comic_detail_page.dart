@@ -2,19 +2,38 @@
 import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
 import 'package:comicbook/src/models/comic_response.dart';
-import 'package:comicbook/src/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ComicDetailPage extends StatelessWidget {
+class ComicDetailPage extends StatefulWidget {
 
+  @override
+  _ComicDetailPageState createState() => _ComicDetailPageState();
+}
+
+class _ComicDetailPageState extends State<ComicDetailPage> {
   ComicDetailBloc comicBlocGlobal;
+  Result result;
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+
+    result = ModalRoute.of(context).settings.arguments;
+    comicBlocGlobal = Provider.of<ComicDetailBloc>(context);
+    comicBlocGlobal.loadComic(result.id);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    final Result result = ModalRoute.of(context).settings.arguments;
-    final comicBloc = Provider.gtComicBloc(context);
-    comicBlocGlobal = comicBloc;
+
 
     return Scaffold(
       body: SafeArea(
@@ -26,7 +45,7 @@ class ComicDetailPage extends StatelessWidget {
                   [
                     SizedBox(height: 10),
                     _posterComic(context,result),
-                    _components(result.id, comicBloc),
+                    _components(result.id, comicBlocGlobal),
                   ]
               ),
             )
@@ -100,7 +119,7 @@ class ComicDetailPage extends StatelessWidget {
   }
 
   Widget _components(int id, ComicDetailBloc comicDetailBloc){
-    comicDetailBloc.loadComic(id);
+
     return StreamBuilder(
       stream: comicDetailBloc.comicsStream,
       builder: (context, snapshot) {
@@ -131,7 +150,6 @@ class ComicDetailPage extends StatelessWidget {
     return widgets;
   }
 
-
   Widget _buildComic(ComicComponents comicComponents){
     return Container(
       child: Column(
@@ -150,7 +168,7 @@ class ComicDetailPage extends StatelessWidget {
             ),
           ),
           Divider(),
-          
+
           _grid(comicComponents.components),
         ],
       ),
@@ -173,7 +191,7 @@ class ComicDetailPage extends StatelessWidget {
       children: _listComponents(components),
     );
   }
-  
+
   List<Widget> _listComponents(List<Component> components){
     List<Widget> items = [];
 
@@ -241,5 +259,4 @@ class ComicDetailPage extends StatelessWidget {
           },
         ));
   }
-
 }

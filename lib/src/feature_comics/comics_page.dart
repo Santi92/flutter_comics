@@ -1,7 +1,7 @@
 import 'package:comicbook/src/feature_comics/comics_bloc.dart';
 import 'package:comicbook/src/models/comic_response.dart';
-import 'package:comicbook/src/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class ComicsPage extends StatefulWidget {
@@ -10,11 +10,18 @@ class ComicsPage extends StatefulWidget {
 }
 
 class _ComicsPageState extends State<ComicsPage> {
+  ComicsBloc comicsBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    comicsBloc = Provider.of<ComicsBloc>(context);
+    comicsBloc.loadComics();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
-    final comicsBloc = Provider.of(context);
-    comicsBloc.loadComics();
 
     return Scaffold(
       appBar: AppBar(

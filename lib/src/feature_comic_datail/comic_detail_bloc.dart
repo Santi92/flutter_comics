@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ComicDetailBloc {
 
-  int comicId = 0;
+  int comicId;
   ComicsRepository _repository = ComicsRepository();
 
   final _comicController = new BehaviorSubject<List<ComicComponents>>();
@@ -19,12 +19,18 @@ class ComicDetailBloc {
 
 
   void loadComic(int id) async{
-    comicId = id;
-    final result = await _repository.getComicDetail(comicId);
+    print(comicId);
+    print(id);
 
-    final List<ComicComponents> listComponent = filterComponents(result);
+    if(comicId != id){
+      comicId = id;
+      final result = await _repository.getComicDetail(comicId);
 
-    _comicController.sink.add(listComponent);
+      //final List<ComicComponents> listComponent = filterComponents(result);
+
+     // _comicController.sink.add(listComponent);
+    }
+
 
   }
 
@@ -70,8 +76,8 @@ class ComicDetailBloc {
   }
 
   void getPictureUrl(String url) async {
-    final result = await _repository.getComicDetailByUrl(url);
-    _pictureUrlController.sink.add(result.image.iconUrl);
+    //final result = await _repository.getComicDetailByUrl(url);
+    //_pictureUrlController.sink.add(result.image.iconUrl);
   }
 
 
