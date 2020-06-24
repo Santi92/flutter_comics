@@ -1,3 +1,6 @@
+
+import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
+import 'package:comicbook/src/feature_comic_datail/comic_detail_page.dart';
 import 'package:comicbook/src/feature_comics/comics_bloc.dart';
 import 'package:comicbook/src/models/comic_response.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +8,7 @@ import 'package:provider/provider.dart';
 
 
 class ComicsPage extends StatefulWidget {
+
   @override
   _ComicsPageState createState() => _ComicsPageState();
 }
@@ -117,7 +121,14 @@ class _ComicsPageState extends State<ComicsPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, 'comic_detail', arguments: result);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            final ComicDetailBloc block = Provider.of<ComicDetailBloc>(context);
+            return ComicDetailPage(result, block);
+          }),
+        );
+
       },
     );
   }

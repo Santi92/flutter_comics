@@ -1,10 +1,11 @@
 
+import 'package:comicbook/src/bloc.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
 import 'package:comicbook/src/models/comic_datail_response.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ComicDetailBloc {
+class ComicDetailBloc extends Bloc{
 
   int comicId;
   ComicsRepository _repository = ComicsRepository();
@@ -18,19 +19,14 @@ class ComicDetailBloc {
       _pictureUrlController.stream;
 
 
-  void loadComic(int id) async{
-    print(comicId);
-    print(id);
-
-    if(comicId != id){
+ loadComic(int id) async{
       comicId = id;
       final result = await _repository.getComicDetail(comicId);
 
-      //final List<ComicComponents> listComponent = filterComponents(result);
+      final List<ComicComponents> listComponent = filterComponents(result);
 
-     // _comicController.sink.add(listComponent);
-    }
-
+    if(!_comicController.isClosed)
+      _comicController.sink.add(listComponent);
 
   }
 
@@ -80,11 +76,10 @@ class ComicDetailBloc {
     //_pictureUrlController.sink.add(result.image.iconUrl);
   }
 
-
-  void dispose(){
+  @override
+  void dispose() {
+   print("CALLL");
     _comicController.close();
     _pictureUrlController.close();
   }
-
-
 }

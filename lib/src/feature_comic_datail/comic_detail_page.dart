@@ -1,32 +1,36 @@
 
+import 'package:comicbook/src/base_page.dart';
+import 'package:comicbook/src/base_state.dart';
+import 'package:comicbook/src/bloc.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
 import 'package:comicbook/src/models/comic_response.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class ComicDetailPage extends StatefulWidget {
+class ComicDetailPage extends BasePage {
+
+  final Result result;
+
+  ComicDetailPage(this.result, ComicDetailBloc _comicBlocGlobal) : super(bloc: _comicBlocGlobal);
 
   @override
-  _ComicDetailPageState createState() => _ComicDetailPageState();
+  _ComicDetailPageState createState() => _ComicDetailPageState(bloc);
 }
 
-class _ComicDetailPageState extends State<ComicDetailPage> {
-  ComicDetailBloc comicBlocGlobal;
-  Result result;
+class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> {
+
+  _ComicDetailPageState(ComicDetailBloc bloc) : super(bloc);
+
 
   @override
   void initState() {
-
+    bloc.loadComic(widget.result.id);
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
 
-    result = ModalRoute.of(context).settings.arguments;
-    comicBlocGlobal = Provider.of<ComicDetailBloc>(context);
-    comicBlocGlobal.loadComic(result.id);
     super.didChangeDependencies();
   }
 
@@ -39,13 +43,15 @@ class _ComicDetailPageState extends State<ComicDetailPage> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            _comicApp(result),
+            _comicApp(widget.result),
             SliverList(
               delegate: SliverChildListDelegate(
                   [
                     SizedBox(height: 10),
-                    _posterComic(context,result),
-                    _components(result.id, comicBlocGlobal),
+                    _posterComic(context,widget.result),
+                    _components(
+                        widget.result.id,
+                        bloc),
                   ]
               ),
             )
@@ -259,4 +265,5 @@ class _ComicDetailPageState extends State<ComicDetailPage> {
           },
         ));
   }
+
 }

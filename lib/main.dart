@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (BuildContext context) => ComicsPage(),
-          'comic_detail': (BuildContext context) => ComicDetailPage(),
         },
       ),
     );
