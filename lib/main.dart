@@ -1,12 +1,14 @@
-import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
-import 'package:comicbook/src/feature_comic_datail/comic_detail_page.dart';
-import 'package:comicbook/src/feature_comics/comics_bloc.dart';
+import 'package:async_redux/async_redux.dart';
 import 'package:comicbook/src/feature_comics/comics_page.dart';
-import 'package:comicbook/src/home_page.dart';
+import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+Store<AppState> store;
 
 void main() {
+
+  var state = AppState.initialState();
+  store = Store<AppState>(initialState: state);
   runApp(MyApp());
 }
 
@@ -14,11 +16,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(create: (context) => ComicsBloc()),
-        Provider(create: (context) => ComicDetailBloc())
-      ],
+    return StoreProvider<AppState>(
+      store: store,
       child: MaterialApp(
         title: 'Comic Vine',
         initialRoute: '/',
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routes: {
-          '/': (BuildContext context) => ComicsPage(),
+          '/': (BuildContext context) => ComicsPagePageConnector(),
         },
       ),
     );

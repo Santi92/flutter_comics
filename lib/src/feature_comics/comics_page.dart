@@ -1,28 +1,62 @@
 
+import 'package:async_redux/async_redux.dart';
+import 'package:comicbook/src/business/comics_action.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
 import 'package:comicbook/src/feature_comic_datail/comic_detail_page.dart';
-import 'package:comicbook/src/feature_comics/comics_bloc.dart';
+import 'package:comicbook/src/feature_comics/comics_view_model.dart';
 import 'package:comicbook/src/models/comic_response.dart';
+import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+class ComicsPagePageConnector extends StatelessWidget {
+  ComicsPagePageConnector({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, ComicsViewModel>(
+      model: ComicsViewModel(),
+
+      builder: (BuildContext context, ComicsViewModel vm) {
+          print("ComicsViewModel ${vm.isLoading}");
+        return ComicsPage(
+            comics: vm.comics,
+            onGet: vm.onGetListComics,
+            isLoading: vm.isLoading
+        );
+      } ,
+    );
+  }
+}
 
 class ComicsPage extends StatefulWidget {
+
+  final List<Result> comics;
+  final VoidCallback onGet;
+  bool isLoading;
+
+
+  ComicsPage({
+    this.comics,
+    this.onGet,
+    this.isLoading});
 
   @override
   _ComicsPageState createState() => _ComicsPageState();
 }
 
 class _ComicsPageState extends State<ComicsPage> {
-  ComicsBloc comicsBloc;
+
+  bool _isGridViewStyle;
+  Function _onGet;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    comicsBloc = Provider.of<ComicsBloc>(context);
-    comicsBloc.loadComics();
+  void initState() {
+    _isGridViewStyle = true;
+    _onGet = widget.onGet;
+    _onGet();
+    super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,40 +71,37 @@ class _ComicsPageState extends State<ComicsPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon( Icons.list ),
-            onPressed: ()=> comicsBloc.activateGrid(false),
+            onPressed: () {
+              setState(() {
+                _isGridViewStyle = false;
+              });
+            },
           ),
           IconButton(
             icon: Icon( Icons.grid_on ),
-            onPressed: ()=> comicsBloc.activateGrid(true),
+            onPressed: (){
+              setState(() {
+                _isGridViewStyle = true;
+              });
+            } ,
           ),
         ],
       ),
       body: SafeArea(
         child: Container(
           color: Color.fromRGBO(228, 228, 229, 1),
-          child: _comicsList(comicsBloc),
+          child: _comicsList(),
         ),
       ),
     );
   }
 
-  Widget _comicsList(ComicsBloc comicBloc){
-
-    return StreamBuilder(
-      stream: comicBloc.comicsStream,
-      builder: (BuildContext context, AsyncSnapshot<List<Result>> snapshot){
-
-        if ( snapshot.hasData ) {
-
-          final comics = snapshot.data;
-
-          return comicBloc.isGridViewActivated ? _gridComic(comics):_listComic(comics);
-
-        } else {
-          return Center( child: CircularProgressIndicator());
-        }
-      },
+  Widget _comicsList(){
+    return  widget.comics.isEmpty ?
+    Center( child: CircularProgressIndicator()) : (
+        _isGridViewStyle ? _gridComic(widget.comics):_listComic(widget.comics)
     );
+
   }
 
   Widget _listComic(List<Result> comics){
