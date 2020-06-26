@@ -1,6 +1,5 @@
-
-import 'package:comicbook/src/business/comic_base_action.dart';
-import 'package:comicbook/src/business/loading.dart';
+import 'package:comicbook/src/features/comic/comic_base_action.dart';
+import 'package:comicbook/src/redux/loading.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';
 

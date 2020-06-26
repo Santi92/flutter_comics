@@ -1,8 +1,9 @@
-import 'package:comicbook/src/business/comic_base_action.dart';
+
+import 'package:async_redux/async_redux.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 
 
-class LoadingAction extends ComicBaseActions {
+class LoadingAction extends ReduxAction<AppState> {
   final bool isLoading;
 
   LoadingAction(this.isLoading);

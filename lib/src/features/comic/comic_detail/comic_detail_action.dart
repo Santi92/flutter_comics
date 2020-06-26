@@ -1,7 +1,7 @@
 
-import 'package:comicbook/src/business/comic_base_action.dart';
-import 'package:comicbook/src/business/loading.dart';
-import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
+import 'package:comicbook/src/features/comic/comic_base_action.dart';
+import 'package:comicbook/src/features/comic/comic_detail/comic_components.dart';
+import 'package:comicbook/src/redux/loading.dart';
 import 'package:comicbook/src/models/comic_datail_response.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';

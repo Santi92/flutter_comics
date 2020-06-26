@@ -1,5 +1,5 @@
-import 'package:async_redux/async_redux.dart';
-import 'package:comicbook/src/business/comic_state.dart';
+
+import 'package:comicbook/src/features/comic/comic_state.dart';
 
 
 class AppState {
@@ -12,7 +12,7 @@ class AppState {
   });
 
   AppState copy({ComicState comicState, bool isLoading}) {
-    print("copy $isLoading");
+
     return AppState(
       comicState: comicState ?? this.comicState,
       isLoading: isLoading ?? this.isLoading,

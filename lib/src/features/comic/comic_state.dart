@@ -1,5 +1,6 @@
 
-import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
+
+import 'package:comicbook/src/features/comic/comic_detail/comic_components.dart';
 import 'package:comicbook/src/models/comic_response.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -1,13 +1,9 @@
-
 import 'package:async_redux/async_redux.dart';
-import 'package:comicbook/src/business/comics_action.dart';
-import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
-import 'package:comicbook/src/feature_comic_datail/comic_detail_page.dart';
-import 'package:comicbook/src/feature_comics/comics_view_model.dart';
+import 'package:comicbook/src/features/comic/comic_detail/comic_detail_page.dart';
+import 'package:comicbook/src/features/comic/comics/comics_view_model.dart';
 import 'package:comicbook/src/models/comic_response.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ComicsPagePageConnector extends StatelessWidget {
   ComicsPagePageConnector({Key key}) : super(key: key);
@@ -21,8 +17,8 @@ class ComicsPagePageConnector extends StatelessWidget {
           print("ComicsViewModel ${vm.isLoading}");
         return ComicsPage(
             comics: vm.comics,
-            onGet: vm.onGetListComics,
-            isLoading: vm.isLoading
+            isLoading: vm.isLoading,
+            onGet: vm.onGetComics,
         );
       } ,
     );
@@ -32,14 +28,14 @@ class ComicsPagePageConnector extends StatelessWidget {
 class ComicsPage extends StatefulWidget {
 
   final List<Result> comics;
-  final VoidCallback onGet;
   bool isLoading;
-
+  VoidCallback onGet;
 
   ComicsPage({
     this.comics,
-    this.onGet,
-    this.isLoading});
+    this.isLoading,
+    this.onGet
+  });
 
   @override
   _ComicsPageState createState() => _ComicsPageState();
@@ -48,13 +44,12 @@ class ComicsPage extends StatefulWidget {
 class _ComicsPageState extends State<ComicsPage> {
 
   bool _isGridViewStyle;
-  Function _onGet;
+
 
   @override
   void initState() {
     _isGridViewStyle = true;
-    _onGet = widget.onGet;
-    _onGet();
+     widget.onGet();
     super.initState();
   }
 
