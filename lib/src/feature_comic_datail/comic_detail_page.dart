@@ -1,32 +1,29 @@
 
-import 'package:comicbook/src/base_page.dart';
-import 'package:comicbook/src/base_state.dart';
-import 'package:comicbook/src/bloc.dart';
+import 'package:async_redux/async_redux.dart';
+
+import 'package:comicbook/src/business/comic_detail_action.dart';
+
 import 'package:comicbook/src/feature_comic_datail/comic_components.dart';
-import 'package:comicbook/src/feature_comic_datail/comic_detail_bloc.dart';
+import 'package:comicbook/src/feature_comic_datail/comic_detail_view_model.dart';
 import 'package:comicbook/src/models/comic_response.dart';
+import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
 
-class ComicDetailPage extends BasePage {
+
+
+class ComicDetailPage extends StatefulWidget {
 
   final Result result;
 
-  ComicDetailPage(this.result, ComicDetailBloc _comicBlocGlobal) : super(bloc: _comicBlocGlobal);
+  ComicDetailPage(this.result);
 
   @override
-  _ComicDetailPageState createState() => _ComicDetailPageState(bloc);
+  _ComicDetailPageState createState() => _ComicDetailPageState();
 }
 
-class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> {
-
-  _ComicDetailPageState(ComicDetailBloc bloc) : super(bloc);
+class _ComicDetailPageState extends State<ComicDetailPage> {
 
 
-  @override
-  void initState() {
-    bloc.loadComic(widget.result.id);
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -49,9 +46,7 @@ class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> 
                   [
                     SizedBox(height: 10),
                     _posterComic(context,widget.result),
-                    _components(
-                        widget.result.id,
-                        bloc),
+                    _components(widget.result.id),
                   ]
               ),
             )
@@ -124,14 +119,18 @@ class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> 
     );
   }
 
-  Widget _components(int id, ComicDetailBloc comicDetailBloc){
+  Widget _components(int id){
 
-    return StreamBuilder(
-      stream: comicDetailBloc.comicsStream,
-      builder: (context, snapshot) {
-        if ( snapshot.hasData ) {
-
-          final components = snapshot.data;
+    return StoreConnector<AppState, ComicDetailViewModel>(
+      onInit: (store) {
+        store.dispatch(ComicDetailAction(comicId: id));
+      },
+      model: ComicDetailViewModel(),
+      builder: (context, vm) {
+        if(vm.isLoading){
+          return Center( child: CircularProgressIndicator());
+        }else{
+          final components = vm.components;
 
           return Container(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -139,9 +138,6 @@ class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> 
                 children: _listTitle(components)
             ),
           );
-
-        } else {
-          return Center( child: CircularProgressIndicator());
         }
       },
     );
@@ -213,7 +209,7 @@ class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> 
       child: Row(
         children: <Widget>[
           Expanded(
-            child:_buildImageItem(component.apiUrl),
+            child:_buildImageItem(component.imgUrl??""),
           ),
           Expanded(
             child:  Container(
@@ -236,34 +232,14 @@ class _ComicDetailPageState extends BaseState<ComicDetailPage, ComicDetailBloc> 
   }
 
   Widget _buildImageItem(String url){
-
-    final comicBlocTemp = ComicDetailBloc();
-    comicBlocTemp.getPictureUrl(url);
-
     return ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
-        child: StreamBuilder(
-          stream: comicBlocTemp?.urlStream,
-          builder: (context, snapshot) {
-
-            if ( snapshot.hasData ) {
-
-              final String url = snapshot.data;
-
-              return FadeInImage(
-                image: NetworkImage(url),
-                placeholder: AssetImage('assets/images/giphy.gif'),
-                height: 80.0,
-                width: 50.0,
-                fit: BoxFit.fill,
-              );
-
-            } else {
-              return Image(image: AssetImage('assets/images/giphy.gif'));
-            }
-
-          },
-        ));
+        child: FadeInImage(
+            image: NetworkImage(url),
+            placeholder: AssetImage('assets/images/giphy.gif'),
+            height: 80.0,
+            width: 50.0,
+            fit: BoxFit.fill));
   }
 
 }

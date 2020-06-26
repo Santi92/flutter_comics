@@ -7,14 +7,16 @@ class ComicState{
 
   List<Result> comics;
   Result comicSelected;
-  ComicComponents comicComponents;
+  List<ComicComponents> comicComponents;
 
   ComicState({
       @required this.comics,
       @required this.comicSelected,
       @required this.comicComponents});
 
-  ComicState copy({List<Result> newComics, Result comic, ComicComponents comicComponents}) =>
+  ComicState copy({List<Result> newComics, Result comic,
+    List<ComicComponents> comicComponents}) =>
+
       ComicState(
         comics: newComics ?? this.comics,
         comicSelected: comic ?? this.comicSelected,

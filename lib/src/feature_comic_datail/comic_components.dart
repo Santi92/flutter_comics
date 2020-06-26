@@ -1,6 +1,4 @@
 
-import 'package:comicbook/src/business/comic_state.dart';
-
 class ComicComponents{
 
     String title;
@@ -13,9 +11,10 @@ class ComicComponents{
 class Component{
 
   String apiUrl;
+  String imgUrl;
   String name;
 
-  Component(this.apiUrl, this.name);
+  Component(this.apiUrl, this.name, this.imgUrl);
 
 
 }

@@ -155,8 +155,7 @@ class _ComicsPageState extends State<ComicsPage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            final ComicDetailBloc block = Provider.of<ComicDetailBloc>(context);
-            return ComicDetailPage(result, block);
+            return ComicDetailPage(result);
           }),
         );
 

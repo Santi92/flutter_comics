@@ -25,8 +25,8 @@ class ComicDetailBloc extends Bloc{
 
       final List<ComicComponents> listComponent = filterComponents(result);
 
-    if(!_comicController.isClosed)
-      _comicController.sink.add(listComponent);
+      if(!_comicController.isClosed)
+        _comicController.sink.add(listComponent);
 
   }
 
@@ -65,7 +65,7 @@ class ComicDetailBloc extends Bloc{
     List<Component> components = [];
 
     volumes.forEach((element) {
-        components.add(Component(element.apiDetailUrl, element.name));
+       // components.add(Component(element.apiDetailUrl, element.name));
     });
 
     return components;
