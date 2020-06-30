@@ -1,38 +1,37 @@
-
-import 'package:comicbook/src/features/comic/comic_base_action.dart';
+import 'dart:async';
+import 'package:bloc/bloc.dart';
 import 'package:comicbook/src/features/comic/comics/comic_components.dart';
-import 'package:comicbook/src/redux/loading.dart';
 import 'package:comicbook/src/models/comic_datail_response.dart';
-import 'package:comicbook/src/redux/app_state.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';
+import './bloc.dart';
 
-class ComicDetailAction extends ComicBaseActions{
+class ComicDetailBloc extends Bloc<ComicDetailBlocEvent, ComicDetailBlocState> {
 
   ComicsRepository _comicsRepository;
-  final int comicId;
 
-  //TODO: DI
-  ComicDetailAction({this.comicId}){
-    _comicsRepository = ComicsRepository();
-  }
+
+  ComicDetailBloc(this._comicsRepository);
 
   @override
-  Future<AppState> reduce() async {
+  ComicDetailBlocState get initialState => InitialComicDetailBlocState();
 
-    final result = await _comicsRepository.getComicDetail(comicId);
-    final List<ComicComponents> listComponent = await filterComponents(result);
+  @override
+  Stream<ComicDetailBlocState> mapEventToState(
+    ComicDetailBlocEvent event,
+  ) async* {
 
-    return state.copy(
-        comicState: comicState.copy(
-            comicComponents: listComponent
-        )
-    );
+    if(event is LoadCharacteristicEvent){
+
+      yield InitialComicDetailBlocState();
+
+      final result = await _comicsRepository.getComicDetail(event.comicId);
+      final List<ComicComponents> listComponent = await filterComponents(result);
+
+      yield CharacteristicsComicDetailBlocState(listComponent);
+    }
+
   }
 
-  Future<List<ComicComponents>> setPictureUrl(List<ComicComponents> listComponent) async {
-
-
-  }
 
   Future<List<ComicComponents>> filterComponents(ResultsDetail resultsDetail) async{
 
@@ -83,16 +82,5 @@ class ComicDetailAction extends ComicBaseActions{
 
 
     return components;
-  }
-
-  @override
-  void before() {
-    print("before");
-    dispatch(LoadingAction(true));
-  }
-
-  @override
-  void after() {
-    dispatch(LoadingAction(false));
   }
 }

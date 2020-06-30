@@ -1,37 +1,53 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:comicbook/src/feature_bloc/comic_detail/bloc.dart';
 import 'package:comicbook/src/features/comic/comics/comic_components.dart';
-import 'package:comicbook/src/features/comic/comic_detail/comic_detail_action.dart';
-import 'package:comicbook/src/features/comic/comic_detail/comic_detail_view_model.dart';
+
 import 'package:comicbook/src/models/comic_response.dart';
-import 'package:comicbook/src/redux/app_state.dart';
+import 'package:comicbook/src/repository/comics_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
-class ComicDetailPage extends StatefulWidget {
+class ComicDetailPage extends StatelessWidget {
 
   final Result result;
 
   ComicDetailPage(this.result);
 
   @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          ComicDetailBloc(ComicsRepository()),
+      child: ComicDetailChild(result)
+    );
+  }
+}
+
+
+class ComicDetailChild extends StatefulWidget {
+  final Result result;
+
+  ComicDetailChild(this.result);
+
+  @override
   _ComicDetailPageState createState() => _ComicDetailPageState();
 }
 
-class _ComicDetailPageState extends State<ComicDetailPage> {
+class _ComicDetailPageState extends State<ComicDetailChild> {
 
-
+  List<ComicComponents> components;
 
   @override
-  void didChangeDependencies() {
-
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    // with extensions
+    components = [];
+    context.bloc<ComicDetailBloc>()
+        .add(LoadCharacteristicEvent(widget.result.id));
   }
 
   @override
   Widget build(BuildContext context) {
-
-
 
     return Scaffold(
       body: SafeArea(
@@ -118,24 +134,25 @@ class _ComicDetailPageState extends State<ComicDetailPage> {
 
   Widget _components(int id){
 
-    return StoreConnector<AppState, ComicDetailViewModel>(
-      onInit: (store) {
-        store.dispatch(ComicDetailAction(comicId: id));
-      },
-      model: ComicDetailViewModel(),
-      builder: (context, vm) {
-        if(vm.isLoading){
-          return Center( child: CircularProgressIndicator());
-        }else{
-          final components = vm.components;
+    return BlocBuilder<ComicDetailBloc, ComicDetailBlocState>(
+      builder: (context, state) {
 
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Column(
-                children: _listTitle(components)
-            ),
-          );
+        if(state is InitialComicDetailBlocState){
+          return Center( child: CircularProgressIndicator());
         }
+
+        if(state is CharacteristicsComicDetailBlocState){
+          components.addAll(state.components);
+        }
+
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          child: Column(
+              children: _listTitle(components)
+          ),
+        );
+
+
       },
     );
   }

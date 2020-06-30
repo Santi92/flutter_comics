@@ -1,5 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:comicbook/src/features/comic/comic_detail/comic_components.dart';
+import 'package:comicbook/src/features/comic/comics/comic_components.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
 

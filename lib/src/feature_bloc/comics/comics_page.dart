@@ -1,9 +1,7 @@
-import 'package:async_redux/async_redux.dart';
+import 'package:comicbook/src/feature_bloc/comic_detail/comic_detail_page.dart';
 import 'package:comicbook/src/feature_bloc/comics/comics.dart';
-import 'package:comicbook/src/features/comic/comic_detail/comic_detail_page.dart';
-import 'package:comicbook/src/features/comic/comics/comics_view_model.dart';
+
 import 'package:comicbook/src/models/comic_response.dart';
-import 'package:comicbook/src/redux/app_state.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

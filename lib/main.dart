@@ -1,13 +1,14 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:bloc/bloc.dart';
 import 'package:comicbook/src/feature_bloc/comics/comics_page.dart';
-import 'package:comicbook/src/features/comic/comics/comics_page.dart';
+import 'package:comicbook/src/feature_bloc/simple_bloc_delegate.dart';
 import 'package:comicbook/src/redux/app_state.dart';
 import 'package:flutter/material.dart';
 
 Store<AppState> store;
 
 void main() {
-
+  BlocSupervisor.delegate = SimpleBlocDelegate();
   var state = AppState.initialState();
   store = Store<AppState>(initialState: state);
   runApp(MyApp());
