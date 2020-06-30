@@ -3,10 +3,11 @@ import 'package:bloc/bloc.dart';
 import 'package:comicbook/src/feature_bloc/comics/comics_event.dart';
 import 'package:comicbook/src/feature_bloc/comics/comics_state.dart';
 import 'package:comicbook/src/repository/comics_repository.dart';
+import 'package:comicbook/src/repository/comics_respository_core.dart';
 import 'package:flutter/cupertino.dart';
 
 class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
-  final ComicsRepository comicsRepository;
+  final ComicsRepositoryCore comicsRepository;
 
   ComicsBloc({@required this.comicsRepository});
 

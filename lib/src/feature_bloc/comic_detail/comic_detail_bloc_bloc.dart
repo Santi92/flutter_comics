@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:comicbook/src/features/comic/comics/comic_components.dart';
 import 'package:comicbook/src/models/comic_datail_response.dart';
-import 'package:comicbook/src/repository/comics_repository.dart';
+import 'package:comicbook/src/repository/comics_respository_core.dart';
 import './bloc.dart';
 
 class ComicDetailBloc extends Bloc<ComicDetailBlocEvent, ComicDetailBlocState> {
 
-  ComicsRepository _comicsRepository;
+  ComicsRepositoryCore _comicsRepository;
 
 
   ComicDetailBloc(this._comicsRepository);

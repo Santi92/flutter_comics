@@ -33,5 +33,5 @@ class ComicsSuccess extends ComicsState {
 
   @override
   String toString() =>
-      'PostSuccess { posts: ${posts.length}';
+      'PostSuccess { posts: ${posts?.length??0}}';
 }
