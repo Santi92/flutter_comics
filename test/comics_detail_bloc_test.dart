@@ -42,7 +42,7 @@ void main() {
           ComicComponents('Teams', []),
           ComicComponents('Locations', []),
           ComicComponents('Concepts', [])
-        ]),
+        ])
       ],
     );
 

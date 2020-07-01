@@ -11,7 +11,9 @@ abstract class ComicDetailBlocState extends Equatable{
 class InitialComicDetailBlocState extends ComicDetailBlocState {
 
   @override
-  List<Object> get props {}
+  List<Object> get props {
+    return [];
+  }
 }
 
 class CharacteristicsComicDetailBlocState extends ComicDetailBlocState {
@@ -22,7 +24,7 @@ class CharacteristicsComicDetailBlocState extends ComicDetailBlocState {
 
   @override
   List<Object> get props {
-    return components;
+    return [components.length];
   }
 
   @override

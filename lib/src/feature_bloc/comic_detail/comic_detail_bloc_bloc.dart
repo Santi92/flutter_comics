@@ -22,7 +22,6 @@ class ComicDetailBloc extends Bloc<ComicDetailBlocEvent, ComicDetailBlocState> {
 
     if(event is LoadCharacteristicEvent){
 
-      yield InitialComicDetailBlocState();
 
       final result = await _comicsRepository.getComicDetail(event.comicId);
       final List<ComicComponents> listComponent = await filterComponents(result);
