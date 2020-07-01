@@ -3,12 +3,12 @@ import 'package:bloc/bloc.dart';
 import 'package:comicbook/src/features/comic/comics/comic_components.dart';
 import 'package:comicbook/src/models/comic_datail_response.dart';
 import 'package:comicbook/src/repository/comics_respository_core.dart';
+import 'package:flutter/cupertino.dart';
 import './bloc.dart';
 
 class ComicDetailBloc extends Bloc<ComicDetailBlocEvent, ComicDetailBlocState> {
 
-  ComicsRepositoryCore _comicsRepository;
-
+  final ComicsRepositoryCore _comicsRepository;
 
   ComicDetailBloc(this._comicsRepository);
 
@@ -27,7 +27,7 @@ class ComicDetailBloc extends Bloc<ComicDetailBlocEvent, ComicDetailBlocState> {
       final result = await _comicsRepository.getComicDetail(event.comicId);
       final List<ComicComponents> listComponent = await filterComponents(result);
 
-      yield CharacteristicsComicDetailBlocState(listComponent);
+      yield CharacteristicsComicDetailBlocState(components: listComponent);
     }
 
   }

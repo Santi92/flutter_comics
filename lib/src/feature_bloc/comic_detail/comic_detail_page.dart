@@ -43,7 +43,7 @@ class _ComicDetailPageState extends State<ComicDetailChild> {
     // with extensions
     components = [];
     context.bloc<ComicDetailBloc>()
-        .add(LoadCharacteristicEvent(widget.result.id));
+        .add(LoadCharacteristicEvent(comicId: widget.result.id));
   }
 
   @override

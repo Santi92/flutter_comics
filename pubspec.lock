@@ -42,7 +42,7 @@ packages:
       name: async_redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.11.0"
+    version: "2.12.1"
   bloc:
     dependency: "direct main"
     description:
@@ -304,7 +304,7 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+1"
+    version: "0.0.1+2"
   path_provider_macos:
     dependency: transitive
     description:

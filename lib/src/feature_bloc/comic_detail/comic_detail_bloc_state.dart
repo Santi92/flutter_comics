@@ -18,11 +18,15 @@ class CharacteristicsComicDetailBlocState extends ComicDetailBlocState {
 
   final List<ComicComponents> components;
 
-  CharacteristicsComicDetailBlocState(this.components);
+  CharacteristicsComicDetailBlocState({this.components});
 
   @override
   List<Object> get props {
-    return [components];
+    return components;
   }
+
+  @override
+  String toString() =>
+      'PostSuccess { posts: ${components.length}}';
 }
 

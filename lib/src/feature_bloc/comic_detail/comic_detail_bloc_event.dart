@@ -6,5 +6,5 @@ abstract class ComicDetailBlocEvent {}
 
 class LoadCharacteristicEvent extends ComicDetailBlocEvent{
   final int comicId;
-  LoadCharacteristicEvent(this.comicId);
+  LoadCharacteristicEvent({this.comicId});
 }
